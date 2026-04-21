@@ -1542,7 +1542,10 @@ class RestoranUser
             gunler,
             name,
             slogan,
-            status
+            status,
+            teras_var,
+            konum_lat,
+            konum_lng
         FROM restoranlar
         WHERE id = :restoran_id
         LIMIT 1
@@ -1608,7 +1611,6 @@ class RestoranUser
         $ilce   = trim($_POST['restoranAddressIlce'] ?? '');
         $il     = trim($_POST['restoranAddressIl'] ?? '');
         $phone  = trim($_POST['restoranAddressPhone'] ?? '');
-
         // Temel validasyon
         if ($name === '') {
             return ["success" => false, "message" => "Restoran adı boş olamaz."];
@@ -1623,7 +1625,7 @@ class RestoranUser
             adres = :adres,
             ilce = :ilce,
             sehir = :il,
-            phone = :phone
+            phone = :phone,
         WHERE id = :id
     ";
 

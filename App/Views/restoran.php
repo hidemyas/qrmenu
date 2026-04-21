@@ -15,6 +15,18 @@ use Core\Security; // CSRF token için Security sınıfını kullanıyoruz
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        .doviz-btn {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+        .doviz-btn:hover {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+        .active-doviz {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white !important;
+        }
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Poppins', sans-serif; }
         .page { display: none; }
@@ -40,6 +52,47 @@ use Core\Security; // CSRF token için Security sınıfını kullanıyoruz
                 <i class="fas fa-utensils text-2xl"></i>
                 <h1 class="text-xl font-bold"><?= $restoranData['name']; ?></h1>
             </div>
+            <!-- Dil Seçici -->
+            <div class="relative" id="dilDropdownWrapper">
+                <button onclick="toggleDilMenu()" 
+                    class="flex items-center space-x-2 bg-white/20 hover:bg-white/30 text-white px-3 py-2 rounded-lg border border-white/40 transition text-sm font-semibold shadow">
+                    <span id="secilenDilAdi">Türkçe</span>
+                    <i class="fas fa-chevron-down text-xs ml-1"></i>
+                </button>
+                <div id="dilMenusu" class="hidden absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-xl z-50 border border-gray-100 max-h-64 overflow-y-auto">
+                    <div onclick="dilSec('tr','Türkçe')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">Türkçe</div>
+                    <div onclick="dilSec('en','English')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">English</div>
+                    <div onclick="dilSec('zh','中文')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">中文</div>
+                    <div onclick="dilSec('hi','हिन्दी')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">हिन्दी</div>
+                    <div onclick="dilSec('es','Español')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">Español</div>
+                    <div onclick="dilSec('fr','Français')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">Français</div>
+                    <div onclick="dilSec('ar','العربية')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">العربية</div>
+                    <div onclick="dilSec('bn','বাংলা')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">বাংলা</div>
+                    <div onclick="dilSec('pt','Português')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">Português</div>
+                    <div onclick="dilSec('ru','Русский')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">Русский</div>
+                    <div onclick="dilSec('ur','اردو')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">اردو</div>
+                    <div onclick="dilSec('id','Indonesia')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">Indonesia</div>
+                    <div onclick="dilSec('de','Deutsch')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">Deutsch</div>
+                    <div onclick="dilSec('ja','日本語')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">日本語</div>
+                    <div onclick="dilSec('sw','Kiswahili')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">Kiswahili</div>
+                    <div onclick="dilSec('mr','मराठी')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">मराठी</div>
+                    <div onclick="dilSec('te','తెలుగు')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">తెలుగు</div>
+                    <div onclick="dilSec('ko','한국어')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">한국어</div>
+                    <div onclick="dilSec('vi','Tiếng Việt')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">Tiếng Việt</div>
+                    <div onclick="dilSec('ta','தமிழ்')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">தமிழ்</div>
+                    <div onclick="dilSec('it','Italiano')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">Italiano</div>
+                    <div onclick="dilSec('th','ภาษาไทย')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">ภาษาไทย</div>
+                    <div onclick="dilSec('gu','ગુજરાતી')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">ગુજરાતી</div>
+                    <div onclick="dilSec('fa','فارسی')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">فارسی</div>
+                    <div onclick="dilSec('pl','Polski')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">Polski</div>
+                    <div onclick="dilSec('nl','Nederlands')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">Nederlands</div>
+                    <div onclick="dilSec('uk','Українська')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">Українська</div>
+                    <div onclick="dilSec('ms','Melayu')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">Melayu</div>
+                    <div onclick="dilSec('ro','Română')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">Română</div>
+                    <div onclick="dilSec('el','Ελληνικά')" class="px-4 py-3 hover:bg-purple-50 cursor-pointer text-gray-700 font-medium transition text-sm">Ελληνικά</div>
+                </div>
+            </div>
+            </select>
             <div class="flex items-center space-x-4">
                 <button onclick="toggleStoreInfo()" class="relative">
                     <i class="fas fa-info-circle text-xl"></i>
@@ -52,7 +105,20 @@ use Core\Security; // CSRF token için Security sınıfını kullanıyoruz
         </div>
     </div>
 </header>
-
+<?php if (!empty($havaDurumu)): ?>
+<div class="bg-white border-b border-gray-100 shadow-sm">
+    <div class="container mx-auto px-4 py-2">
+        <div class="flex items-center justify-center space-x-6 text-sm text-gray-600">
+            <span class="text-lg"><?= $havaDurumu['ikon'] ?></span>
+            <span class="font-semibold text-gray-800"><?= $havaDurumu['sicaklik'] ?>°C</span>
+            <span><?= $havaDurumu['durum'] ?></span>
+            <span class="text-gray-400">|</span>
+            <span><i class="fas fa-tint text-blue-400 mr-1"></i>%<?= $havaDurumu['nem'] ?></span>
+            <span><i class="fas fa-wind text-gray-400 mr-1"></i><?= $havaDurumu['ruzgar'] ?> km/s</span>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
 <!-- Store Info Modal -->
 <div id="storeInfoModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
     <div class="flex items-center justify-center min-h-screen p-4">
@@ -250,6 +316,32 @@ use Core\Security; // CSRF token için Security sınıfını kullanıyoruz
             </div>
         </div>
     </div>
+    <!-- Döviz Seçici Widget -->
+    <div class="fixed bottom-4 right-4 z-50">
+        <div id="dovizWidget" class="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+            <div class="gradient-bg px-3 py-2 flex items-center justify-between">
+                <span class="text-white text-xs font-semibold">
+                    <i class="fas fa-coins mr-1"></i>Para Birimi
+                </span>
+                <button onclick="toggleDovizWidget()" class="text-white/80 hover:text-white transition ml-3">
+                    <i id="dovizToggleIcon" class="fas fa-chevron-down text-xs"></i>
+                </button>
+            </div>
+            <div id="dovizListesi" class="hidden p-2 grid grid-cols-3 gap-1 w-44">
+                <button onclick="paraBirimiSec('TRY','₺','TL')" id="btn-TRY" class="doviz-btn active-doviz text-xs py-1 px-2 rounded-lg font-semibold transition">₺ TL</button>
+                <button onclick="paraBirimiSec('USD','$','USD')" id="btn-USD" class="doviz-btn text-xs py-1 px-2 rounded-lg font-semibold transition">$ USD</button>
+                <button onclick="paraBirimiSec('EUR','€','EUR')" id="btn-EUR" class="doviz-btn text-xs py-1 px-2 rounded-lg font-semibold transition">€ EUR</button>
+                <button onclick="paraBirimiSec('GBP','£','GBP')" id="btn-GBP" class="doviz-btn text-xs py-1 px-2 rounded-lg font-semibold transition">£ GBP</button>
+                <button onclick="paraBirimiSec('JPY','¥','JPY')" id="btn-JPY" class="doviz-btn text-xs py-1 px-2 rounded-lg font-semibold transition">¥ JPY</button>
+                <button onclick="paraBirimiSec('CHF','₣','CHF')" id="btn-CHF" class="doviz-btn text-xs py-1 px-2 rounded-lg font-semibold transition">₣ CHF</button>
+                <button onclick="paraBirimiSec('CAD','C$','CAD')" id="btn-CAD" class="doviz-btn text-xs py-1 px-2 rounded-lg font-semibold transition">C$ CAD</button>
+                <button onclick="paraBirimiSec('AUD','A$','AUD')" id="btn-AUD" class="doviz-btn text-xs py-1 px-2 rounded-lg font-semibold transition">A$ AUD</button>
+            </div>
+            <div class="px-3 py-1 bg-gray-50 border-t border-gray-100">
+                <p id="kurBilgisi" class="text-xs text-gray-400 text-center">Yükleniyor...</p>
+            </div>
+        </div>
+    </div>
 </main>
 
 <!-- Footer -->
@@ -262,8 +354,10 @@ use Core\Security; // CSRF token için Security sınıfını kullanıyoruz
 
 <script>
     const restoranID = <?= $restoranData['id']; ?>;
+    const csrfToken = "<?= $csrfToken ?>";
     // Sample data
-    const menuData = <?= json_encode($restoranMenu); ?>;
+    let menuData = <?= json_encode($restoranMenu); ?>;
+    let currentProductId = null;
 
     let currentCategory = '';
     let ratings = {
@@ -271,6 +365,17 @@ use Core\Security; // CSRF token için Security sınıfını kullanıyoruz
         service: 0,
         venue: 0
     };
+    let sabitMetinler = {
+        fiyatBilgisi: 'Fiyat bilgisi sadece bilgilendirme amaçlıdır',
+        urunHakkinda: 'Bu ürünümüz özel tarifimizle hazırlanmaktadır. Taze ve kaliteli malzemeler kullanılarak özenle pişirilir. Alerjen bilgisi için lütfen garsonumuzla görüşün.'
+    };
+    let dilYukleniyor = false;
+    let urunHakkindaMetni = 'Bu ürünümüz özel tarifimizle hazırlanmaktadır. Taze ve kaliteli malzemeler kullanılarak özenle pişirilir. Alerjen bilgisi için lütfen garsonumuzla görüşün.';
+    let urunHakkindaBaslik = 'Ürün Hakkında';
+    let kurlar = {};
+    let secilenBirim = 'TRY';
+    let secilenSembol = '₺';
+    let dovizWidgetAcik = false;
 
     // Page navigation
     function showPage(pageId) {
@@ -287,24 +392,24 @@ use Core\Security; // CSRF token için Security sınıfını kullanıyoruz
         document.getElementById('categoryTitle').textContent = category.title;
 
         const productsHtml = category.products.map(product => `
-                <div onclick="showProduct(${product.id})" class="product-card bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer">
-                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-contain">
-                    <div class="p-4">
-                        <h3 class="font-semibold text-lg text-gray-800">${product.name}</h3>
-                        <p class="text-sm text-gray-600 mt-2">${product.description}</p>
-                        <div class="mt-4">
-                            <span class="text-2xl font-bold text-purple-600">₺${product.price}</span>
-                        </div>
+            <div onclick="showProduct(${product.id})" class="product-card bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer">
+                <img src="${product.image || ''}" alt="${product.name}" class="w-full h-48 object-contain">
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg text-gray-800">${product.name}</h3>
+                    <p class="text-sm text-gray-600 mt-2">${product.description || ''}</p>
+                    <div class="mt-4">
+                        <span class="text-2xl font-bold text-purple-600">${secilenSembol}${tldenCevir(product.price, secilenBirim)}</span>
                     </div>
                 </div>
-            `).join('');
+            </div>
+        `).join('');
 
         document.getElementById('categoryProducts').innerHTML = productsHtml;
         showPage('category');
     }
 
-    // Show product detail
     function showProduct(productId) {
+        currentProductId = productId;
         let product = null;
         for (let category in menuData) {
             product = menuData[category].products.find(p => p.id === productId);
@@ -312,26 +417,27 @@ use Core\Security; // CSRF token için Security sınıfını kullanıyoruz
         }
 
         if (product) {
+            const fiyat = tldenCevir(product.price, secilenBirim);
             const productHtml = `
-                    <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-contain">
-                    <div class="p-6">
-                        <h2 class="text-3xl font-bold text-gray-800 mb-4">${product.name}</h2>
-                        <p class="text-gray-600 mb-6 text-lg">${product.description}</p>
-                        <div class="bg-purple-50 rounded-lg p-4 mb-6">
-                            <div class="flex justify-between items-center">
-                                <span class="text-2xl font-bold text-purple-600">₺${product.price}</span>
-                                <span class="text-sm text-gray-500">
-                                    <i class="fas fa-info-circle mr-1"></i>
-                                    Fiyat bilgisi sadece bilgilendirme amaçlıdır
-                                </span>
-                            </div>
-                        </div>
-                        <div class="border-t pt-4">
-                            <h3 class="font-semibold text-gray-700 mb-2">Ürün Hakkında</h3>
-                            <p class="text-gray-600">Bu ürünümüz özel tarifimizle hazırlanmaktadır. Taze ve kaliteli malzemeler kullanılarak özenle pişirilir. Alerjen bilgisi için lütfen garsonumuzla görüşün.</p>
+                <img src="${product.image || ''}" alt="${product.name}" class="w-full h-64 object-contain">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">${product.name}</h2>
+                    <p class="text-gray-600 mb-6 text-lg">${product.description || ''}</p>
+                    <div class="bg-purple-50 rounded-lg p-4 mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-purple-600">${secilenSembol}${fiyat}</span>
+                            <span class="text-sm text-gray-500">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                Fiyat bilgisi sadece bilgilendirme amaçlıdır
+                            </span>
                         </div>
                     </div>
-                `;
+                    <div class="border-t pt-4">
+                        <h3 class="font-semibold text-gray-700 mb-2">${urunHakkindaBaslik}</h3>
+                        <p class="text-gray-600">${urunHakkindaMetni}</p>
+                    </div>
+                </div>
+            `;
             document.getElementById('productDetail').innerHTML = productHtml;
             showPage('product');
         }
@@ -391,6 +497,7 @@ use Core\Security; // CSRF token için Security sınıfını kullanıyoruz
         })
             .then(response => response.json())
             .then(data => {
+            if (data.success == 1) {
                 // Show success message
                 document.getElementById('successMessage').classList.remove('hidden');
 
@@ -406,6 +513,10 @@ use Core\Security; // CSRF token için Security sınıfını kullanıyoruz
                     document.getElementById('successMessage').classList.add('hidden');
                     showPage('home');
                 }, 2000);
+            } else {
+                // Hata mesajı göster
+                alert(data.message || 'Bir hata oluştu, lütfen tekrar deneyin.');
+            }
             })
             .catch(err => {
                 console.error('Upload error:', err);
@@ -416,13 +527,12 @@ use Core\Security; // CSRF token için Security sınıfını kullanıyoruz
 
 
     }
-
     // Check store status
     function checkStoreStatus() {
+        const statusElement = document.getElementById('storeStatus');
+        if (!statusElement) return;
         const now = new Date();
         const hours = now.getHours();
-        const statusElement = document.getElementById('storeStatus');
-
         if (hours >= 10 && hours < 23) {
             statusElement.textContent = 'Açık';
             statusElement.className = 'text-green-500 font-semibold mt-1';
@@ -432,6 +542,164 @@ use Core\Security; // CSRF token için Security sınıfını kullanıyoruz
         }
     }
 
+    function toggleDilMenu() {
+        const menu = document.getElementById('dilMenusu');
+        menu.classList.toggle('hidden');
+    }
+
+    function dilSec(kod, ad) {
+        document.getElementById('secilenDilAdi').textContent = ad;
+        document.getElementById('dilMenusu').classList.add('hidden');
+        dilDegistir(kod);
+    }
+    // Menü dışına tıklanınca kapat
+    document.addEventListener('click', function(e) {
+        const wrapper = document.getElementById('dilDropdownWrapper');
+        if (wrapper && !wrapper.contains(e.target)) {
+            document.getElementById('dilMenusu').classList.add('hidden');
+        }
+    });
+
+    function dilDegistir(dil) {
+        if (dilYukleniyor) return;
+        dilYukleniyor = true;
+
+        const formData = new FormData();
+        formData.append('form_type', 'getMenuTranslation');
+        formData.append('dil', dil);
+        formData.append('restoran_id', restoranID);
+
+        fetch('/restoran/api', {
+            method: 'POST',
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success && data.menu) {
+
+                // menuData güncelle
+                for (const catKey in data.menu) {
+                    if (menuData[catKey]) {
+                        menuData[catKey].title    = data.menu[catKey].title;
+                        menuData[catKey].products = data.menu[catKey].products;
+                    }
+                }
+
+                // Ana sayfadaki kategori kartı başlıklarını güncelle
+                for (const catKey in data.menu) {
+                    const titleEl = document.querySelector(`[onclick="showCategory('${catKey}')"] h3`);
+                    if (titleEl) {
+                        titleEl.textContent = data.menu[catKey].title;
+                    }
+                }
+
+                // Ürün hakkında metnini güncelle
+                if (data.urunHakkinda) {
+                    urunHakkindaMetni = data.urunHakkinda;
+                }
+                if (data.urunHakkindaBaslik) {
+                    urunHakkindaBaslik = data.urunHakkindaBaslik;
+                }
+
+                // Kategori sayfası açıksa yenile
+                if (currentCategory && document.getElementById('categoryPage').classList.contains('active')) {
+                    showCategory(currentCategory);
+                }
+
+                // Ürün sayfası açıksa yenile
+                if (currentProductId && document.getElementById('productPage').classList.contains('active')) {
+                    showProduct(currentProductId);
+                }
+            }
+        })
+        .catch(err => console.error('Çeviri hatası:', err))
+        .finally(() => {
+            dilYukleniyor = false;
+        });
+    }
+
+    async function kurlariYukle() {
+        const bugun = new Date().toISOString().split('T')[0];
+        const cacheTarih = localStorage.getItem('doviz_tarih');
+        const cacheKurlar = localStorage.getItem('doviz_kurlar');
+
+        if (cacheTarih === bugun && cacheKurlar) {
+            kurlar = JSON.parse(cacheKurlar);
+            document.getElementById('kurBilgisi').textContent = '✓ Güncel kur yüklendi';
+            return;
+        }
+
+        const f = new FormData();
+        f.append('form_type', 'getDovizKur');
+
+        try {
+            const res = await fetch('/restoran/api', { method: 'POST', body: f });
+            const data = await res.json();
+
+            if (data.success) {
+                kurlar = data.kurlar;
+                localStorage.setItem('doviz_tarih', bugun);
+                localStorage.setItem('doviz_kurlar', JSON.stringify(kurlar));
+                document.getElementById('kurBilgisi').textContent = '✓ Güncel kur yüklendi';
+            } else {
+                document.getElementById('kurBilgisi').textContent = '⚠ Kur yüklenemedi';
+            }
+        } catch(e) {
+            document.getElementById('kurBilgisi').textContent = '⚠ Kur yüklenemedi';
+        }
+    }
+
+    function tldenCevir(tlFiyat, hedefBirim) {
+        if (hedefBirim === 'TRY') return tlFiyat;
+        if (!kurlar[hedefBirim]) return tlFiyat;
+        return (tlFiyat * kurlar[hedefBirim]).toFixed(2);
+    }
+
+    function paraBirimiSec(birim, sembol, ad) {
+        secilenBirim = birim;
+        secilenSembol = sembol;
+
+        // Aktif butonu güncelle
+        document.querySelectorAll('.doviz-btn').forEach(btn => {
+            btn.classList.remove('active-doviz');
+        });
+        document.getElementById('btn-' + birim).classList.add('active-doviz');
+
+        // Kur bilgisini güncelle
+        if (birim === 'TRY') {
+            document.getElementById('kurBilgisi').textContent = 'Türk Lirası seçildi';
+        } else {
+            const kur = kurlar[birim];
+            if (kur) {
+                document.getElementById('kurBilgisi').textContent = `1 ₺ = ${kur} ${ad}`;
+            }
+        }
+
+        // Eğer kategori sayfasındaysak ürünleri yenile
+        if (currentCategory && document.getElementById('categoryPage').classList.contains('active')) {
+            showCategory(currentCategory);
+        }
+        // Ürün sayfası açıksa yenile
+        if (document.getElementById('productPage').classList.contains('active')) {
+            showProduct(currentProductId);
+        }
+    }
+
+    function toggleDovizWidget() {
+        dovizWidgetAcik = !dovizWidgetAcik;
+        const liste = document.getElementById('dovizListesi');
+        const icon = document.getElementById('dovizToggleIcon');
+        if (dovizWidgetAcik) {
+            liste.classList.remove('hidden');
+            icon.className = 'fas fa-chevron-down text-xs';
+        } else {
+            liste.classList.add('hidden');
+            icon.className = 'fas fa-chevron-up text-xs';
+        }
+    }
+
+    // Kurları sayfa açılınca yükle
+    kurlariYukle();
     // Initialize
     checkStoreStatus();
     setInterval(checkStoreStatus, 60000); // Check every minute
