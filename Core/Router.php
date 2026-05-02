@@ -44,7 +44,17 @@ class Router
      */
     public function handle(Request $request): Response
     {
-        if($request->isPost() && !Security::checkCsrfToken($request->input('_token'))) {
+        $uri = $request->server('REQUEST_URI');
+        $csrfBypassRoutes = ['/restoran/api', '/yonetim/api'];
+        $shouldBypass = false;
+        foreach ($csrfBypassRoutes as $route) {
+            if (str_contains($uri, $route)) {
+                $shouldBypass = true;
+                break;
+            }
+        }
+
+        if($request->isPost() && !$shouldBypass && !Security::checkCsrfToken($request->input('_token'))) {
             die("Session expired");
         }
         $uri = $request->server('REQUEST_URI');

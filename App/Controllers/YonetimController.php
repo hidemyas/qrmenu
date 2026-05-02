@@ -248,7 +248,37 @@ class YonetimController
             $response = $userModel->updateRestoranInfo();
             return json($response);
         }
+        if ($form_type === "saveHavaDurumuAyar") {
+            $restoranId = (int) $_SESSION['user_id'];
+            $terasVar   = (int)($request->input('teras_var') ?? 0);
+            $lat        = $request->input('konum_lat') ?: null;
+            $lng        = $request->input('konum_lng') ?: null;
 
+            $pdo = \Core\Database::getConnection();
+            $stmt = $pdo->prepare("
+                UPDATE restoranlar 
+                SET teras_var = :teras_var, konum_lat = :lat, konum_lng = :lng
+                WHERE id = :id
+            ");
+            $stmt->execute([
+                ':teras_var' => $terasVar,
+                ':lat'       => $lat,
+                ':lng'       => $lng,
+                ':id'        => $restoranId
+            ]);
+
+            return json(['success' => true, 'message' => 'Kaydedildi']);
+        }
+
+        if ($form_type === "getHavaDurumu") {
+            $lat = $request->input('lat');
+            $lng = $request->input('lng');
+            $hava = \App\Services\HavaDurumuService::apidentCek($lat, $lng);
+            if (!$hava) {
+                return json(['success' => false, 'message' => 'Hava durumu alınamadı']);
+            }
+            return json(['success' => true, 'hava' => $hava]);
+        }
 
         return json(['name' => $request->query('name')]);
     }
